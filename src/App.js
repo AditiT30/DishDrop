@@ -1,6 +1,10 @@
 import React from 'react';
 import Header from './components/Header'; //even if we write './components/Header.js' it still works
 import Body from './components/Body';
+import {createBrowserRouter,RouterProvider} from "react-router-dom";
+import About from "./components/About";
+import Contact from "./components/Contact";
+import Error from "./components/Error";
 
 /* const styleCard = {
     backgroundColor: "#f0f0f0",
@@ -18,4 +22,21 @@ const App = () => {
         </div>
     )
 }
+
+export const appRouter = createBrowserRouter([
+    {
+        path: "/",
+        element: <App/>,
+        errorElement: <Error/>
+    },
+    { //IF PATH IS /about , LOAD element
+        path: "/about",
+        element:<About/>
+    },
+    {
+        path: "/contact",
+        element: <Contact/>
+    }
+])
+
 export default App;

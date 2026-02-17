@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import RestaurantCard from "./RestaurantCard";
 import {useState} from "react";
 import Shimmer from "./Shimmer";
-
+import {Link} from "react-router-dom";
 // import resList from "../utils/mockData";
 const Body = () =>{
     //Local State Variable
@@ -19,11 +19,11 @@ const Body = () =>{
     },[]);
 
     const fetchData = async() => {
-        const data = await fetch("https://corsproxy.io/?https://www.swiggy.com/mapi/restaurants/list/v5?offset=0&is-seo-homepage-enabled=true&lat=28.65420&lng=77.23730&carousel=true&third_party_vendor=1");
+        const data = await fetch("https://corsproxy.io/?url=https://namastedev.com/api/v1/listRestaurants");
         const json = await data.json();
         console.log(json);
         //rerendering happens here
-        const restaurantData = json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
+        const restaurantData = json?.data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
         // Set the state
         setListOfRestaurants(restaurantData || []);
         setFilteredRestaurant(restaurantData || []);
@@ -65,9 +65,9 @@ const Body = () =>{
             </div>
             <div className="res-container">
                 {/*Restaurant Card*/}
-                {/*not using keys (not acceptable) <<<< index as key <<<<< unique id(best practice)*/}
+                {/*not using keys (not acceptable) <<<< index as key <<<<< unique id(best practice) , key should be inside parent tag*/}
                 { filteredRestaurant.map((res) => (
-                    <RestaurantCard key={res?.info?.id} resData={res?.info} />
+                   <Link  key={res?.info?.id} to={"/restaurants/" + res?.info?.id}> <RestaurantCard resData={res?.info} /></Link>
                 ))
                 }
             </div>

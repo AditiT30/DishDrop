@@ -1,16 +1,17 @@
 import React from 'react';
-import {useState,useEffect} from "react";
 import Shimmer from "./Shimmer";
 import {useParams} from "react-router-dom";
-import {MENU_API_URL} from "../utils/constants";
-const RestaurantMenu = () => {
-    const [resInfo , setResInfo] = useState([]);
+import useRestaurantMenu from "../utils/useRestaurantMenu";
 
+const RestaurantMenu = () => {
     // const params = useParams();
     //console.log(params); - object with resId , so destructure it
 
     const {resId} = useParams(); //extract resId from the url and append it in the fetch api link
+/*
+FETCH data logic using useState & useEffect - replaced with custom Hook to ++ modularity of component
 
+  const [resInfo , setResInfo] = useState([]);
     useEffect(() => {
         fetchMenu();
     },[])
@@ -21,6 +22,10 @@ const RestaurantMenu = () => {
         setResInfo(json);
         console.log(json);
     }
+ */
+    const resInfo = useRestaurantMenu(resId); //CUSTOM HOOK , RestaurantMenu doesn't need to manage its own state
+
+
     if (resInfo === null) return <Shimmer />;
     const { name , cuisines , costForTwoMessage }  = resInfo?.data?.cards[2]?.card?.card?.info || {};
     const { itemCards  }  = resInfo?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card?.card || {};

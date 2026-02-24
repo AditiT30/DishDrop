@@ -3,19 +3,19 @@ import RestaurantCard from "./RestaurantCard";
 import {useState} from "react";
 import Shimmer from "./Shimmer";
 import {Link} from "react-router-dom";
+import useOnlineStatus from "../utils/useOnlineStatus";
 // import resList from "../utils/mockData";
 const Body = () =>{
     //Local State Variable
-    const [listOfRestaurants, setListOfRestaurants] = useState([]); //original data received from api maintained here, not modified
     const [searchText, setSearchText] = useState("");
+    const [listOfRestaurants, setListOfRestaurants] = useState([]); //original data received from api maintained here, not modified
     const [filteredRestaurant, setFilteredRestaurant] = useState([]); //to enable search for next times without refreshing
 
     //Whenever state variables update , react triggers a reconciliation cycle(re-renders the component)
     console.log("Body of Restaurants");
 
-    //useEffect hook
     useEffect(() => {
-       fetchData();
+        fetchData();
     },[]);
 
     const fetchData = async() => {
@@ -28,6 +28,9 @@ const Body = () =>{
         setListOfRestaurants(restaurantData || []);
         setFilteredRestaurant(restaurantData || []);
     }
+
+    const onlineStatus=useOnlineStatus();
+    if(onlineStatus === false) return <h1>Looks like you're offline!Please check your internet connection.</h1>
 
     //Conditional Rendering
     //TO HANDLE EMPTY SCREEN before api data rendered (approach 2)
